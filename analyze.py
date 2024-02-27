@@ -1,5 +1,6 @@
 import pandas as pd
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def analyze_csv(file_path):
     # Load the CSV file into a DataFrame
@@ -13,9 +14,12 @@ def analyze_csv(file_path):
     print("\nFirst 5 Rows:")
     print(df.head())
 
-    # Display summary statistics
-    print("\nSummary Statistics:")
-    print(df.describe())
+    # Enhanced summary statistics
+    print("\nEnhanced Summary Statistics:")
+    print(df.agg({
+        "quantity": ["sum", "mean", "std", "min", "max"],
+        "price": ["sum", "mean", "std", "min", "max"]
+    }))
 
     # Check for and display any missing values
     missing_values = df.isnull().sum()
@@ -28,10 +32,23 @@ def analyze_csv(file_path):
     # Group sales by date and sum the total sales
     sales_by_date = df.groupby("date")["total_sales"].sum().reset_index()
 
-    # Display sales grouped by date
-    print("\nSales Grouped by Date:")
-    print(sales_by_date)
+    # Plotting sales grouped by date
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=sales_by_date, x="date", y="total_sales")
+    plt.xticks(rotation=45)
+    plt.title("Sales Grouped by Date")
+    plt.xlabel("Date")
+    plt.ylabel("Total Sales")
+    plt.tight_layout()
+    plt.show()
 
+    # Displaying a histogram of total sales to understand distribution
+    plt.figure(figsize=(10, 6))
+    sns.histplot(df["total_sales"], bins=20, kde=True)
+    plt.title("Distribution of Total Sales")
+    plt.xlabel("Total Sales")
+    plt.ylabel("Frequency")
+    plt.show()
 
 if __name__ == "__main__":
     file_path = "sales_data.csv"
