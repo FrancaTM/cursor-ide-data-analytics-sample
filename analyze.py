@@ -2,8 +2,6 @@ import pandas as pd
 
 
 def analyze_csv(file_path):
-    file_path = "sales_data.csv"
-
     # Load the CSV file into a DataFrame
     df = pd.read_csv(file_path)
 
@@ -33,3 +31,8 @@ def analyze_csv(file_path):
     # Display sales grouped by date
     print("\nSales Grouped by Date:")
     print(sales_by_date)
+
+
+if __name__ == "__main__":
+    file_path = "sales_data.csv"
+    analyze_csv(file_path)
